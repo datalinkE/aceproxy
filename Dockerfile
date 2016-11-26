@@ -16,7 +16,7 @@ CMD ["/sbin/my_init"]
 VOLUME /etc/aceproxy
 
 # Устанавливаем локаль
-RUN RUN locale-gen ru_RU.UTF-8
+RUN locale-gen ru_RU.UTF-8
 
 RUN usermod -u 99 nobody
 RUN usermod -g 100 nobody
