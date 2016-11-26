@@ -1,36 +1,55 @@
 
-# Version: 0.0.1
+# Version: 0.0.2
 
 # Используем за основу контейнера phusion/baseimage
-FROM ubuntu:14.04
+FROM phusion/baseimage:0.9.19
 
 # Переключаем Ubuntu в неинтерактивный режим — чтобы избежать лишних запросов
-ENV DEBIAN_FRONTEND noninteractive 
+ENV DEBIAN_FRONTEND noninteractive
+
+#Задаём порты
+EXPOSE 22 8000 8621 62062 9944 9903
+
+#Прбрасываем папку с конфигами aceproxy
+VOLUME /etc/aceproxy
 
 # Устанавливаем локаль
-RUN locale-gen ru_RU.UTF-8 && dpkg-reconfigure locales
+RUN RUN locale-gen ru_RU.UTF-8 && \
 
-# Устанавливаем время
-RUN echo Asia/Yekaterinburg >/etc/timezone && dpkg-reconfigure -f noninteractive tzdata 
+usermod -u 99 nobody && \
+usermod -g 100 nobody && \
 
 # Добавляем необходимые репозитарии и устанавливаем пакеты
-RUN apt-get update && apt-get install -y wget
-RUN echo 'deb http://repo.acestream.org/ubuntu/ trusty main' > /etc/apt/sources.list.d/acestream.list
-RUN wget -O - http://repo.acestream.org/keys/acestream.public.key | apt-key add -
-RUN apt-get update && apt-get install -y acestream-engine vlc-nox python-gevent supervisor ca-certificates git python-setuptools python-pip python-dev build-essential
-RUN pip install greenlet gevent psutil
+cd /tmp && \
+apt-get update && apt-get install -y wget mc nano && \
+wget http://cloud.sybdata.com/AceStream/libgnutls-deb0-28_3.3.15-5ubuntu2_amd64.deb && \
+wget http://cloud.sybdata.com/AceStream/acestream-engine_3.0.5.1-0.2_amd64.deb && \
+apt-get install gdebi && \
+gdebi libgnutls-deb0-28_3.3.15-5ubuntu2_amd64.deb && \
+gdebi acestream-engine_3.0.5.1-0.2_amd64.deb && \
+add-apt-repository ppa:videolan/stable-daily && \
+apt-get update && \
+apt-get install -y vlc-nox python-gevent unzip ca-certificates supervisor python-setuptools python-pip python-dev build-essential && \
+pip install greenlet gevent psutil && \
+systemctl enable supervisor && \
+systemctl start supervisor && \
 
-#
-RUN mkdir -p /var/log/supervisor
-RUN useradd --system --create-home --no-user-group --gid nogroup tv
-RUN git clone https://github.com/AndreyPavlenko/aceproxy.git
-RUN mv ./aceproxy /home/tv/aceproxy-master
+# Добавляем пользователя "tv" 
+adduser --disabled-password --gecos "" tv && \
 
-ADD supervisord.conf /etc/supervisor/conf.d/supervisord.conf
-ADD start.sh /start.sh
-RUN chmod +x /start.sh
+git clone https://github.com/AndreyPavlenko/aceproxy.git && \
+mv ./aceproxy /home/tv/aceproxy-master && \
 
-EXPOSE 8000 8621 62062
-VOLUME /etc/aceproxy
+ADD supervisord.conf /etc/supervisor/conf.d/supervisord.conf && \
+ADD start.sh /start.sh && \
+chmod +x /start.sh
+
+# Подчищаем
+apt-get clean && \
+rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
+/usr/share/man /usr/share/groff /usr/share/info \
+/usr/share/lintian /usr/share/linda /var/cache/man && \
+(( find /usr/share/doc -depth -type f ! -name copyright|xargs rm || true )) && \
+(( find /usr/share/doc -empty|xargs rmdir || true ))
 
 ENTRYPOINT ["/start.sh"]
