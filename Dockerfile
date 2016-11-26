@@ -41,12 +41,16 @@ RUN adduser --disabled-password --gecos "" tv
 RUN git clone https://github.com/AndreyPavlenko/aceproxy.git 
 RUN mv ./aceproxy /home/tv/aceproxy-master 
 
-ADD supervisord.conf /etc/supervisor/conf.d/supervisord.conf 
+ADD supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+ADD supervisor/supervisord.conf /etc/supervisor/supervisord.conf
 ADD start.sh /start.sh 
 RUN chmod +x /start.sh
 
 # Подчищаем
-RUN apt-get clean 
+RUN apt-get clean
+RUN rm -rf acestream_3.0.5.1_ubuntu_14.04_x86_64.tar.gz
+RUN rm -rf acestream_3.0.5.1_ubuntu_14.04_x86_64
+RUN rm -rf acestream.public.key
 RUN rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /var/cache/man
 RUN find /usr/share/doc -depth -type f ! -name copyright|xargs rm || true
 RUN find /usr/share/doc -empty|xargs rmdir || true
