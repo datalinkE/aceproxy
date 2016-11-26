@@ -30,10 +30,10 @@ RUN wget http://dl.acestream.org/ubuntu/14/acestream_3.0.5.1_ubuntu_14.04_x86_64
 RUN tar -xf acestream_3.0.5.1_ubuntu_14.04_x86_64.tar.gz
 RUN rm -rf /usr/share/acestream/*
 RUN rm -rf /usr/bin/acestreamengine
-RUN cp acestream_3.0.5.1_ubuntu_14.04_x86_64/data /usr/share/acestream
-RUN cp acestream_3.0.5.1_ubuntu_14.04_x86_64/lib /usr/share/acestream
-RUN cp acestream_3.0.5.1_ubuntu_14.04_x86_64/acestream.conf /usr/share/acestream
-RUN cp acestream_3.0.5.1_ubuntu_14.04_x86_64/acestreamengine /usr/bin/acestreamengine
+RUN cp -r acestream_3.0.5.1_ubuntu_14.04_x86_64/data /usr/share/acestream
+RUN cp  -r acestream_3.0.5.1_ubuntu_14.04_x86_64/lib /usr/share/acestream
+RUN cp -r acestream_3.0.5.1_ubuntu_14.04_x86_64/acestream.conf /usr/share/acestream
+RUN cp -r acestream_3.0.5.1_ubuntu_14.04_x86_64/acestreamengine /usr/bin/acestreamengine
  
 # Добавляем пользователя "tv" 
 RUN adduser --disabled-password --gecos "" tv 
@@ -47,7 +47,7 @@ RUN chmod +x /start.sh
 
 # Подчищаем
 RUN apt-get clean 
-RUN rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/man /usr/share/groff /usr/share/info /usr/share/lintian /usr/share/linda /var/cache/man
+RUN rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /var/cache/man
 RUN find /usr/share/doc -depth -type f ! -name copyright|xargs rm || true
 RUN find /usr/share/doc -empty|xargs rmdir || true
 
