@@ -28,10 +28,10 @@ RUN pip install --upgrade pip
 RUN pip install greenlet gevent psutil 
 RUN wget -o - http://dl.acestream.org/ubuntu/14/acestream_3.0.5.1_ubuntu_14.04_x86_64.tar.gz
 RUN tar -xf acestream_3.0.5.1_ubuntu_14.04_x86_64.tar.gz
-RUN mv acestream_3.0.5.1_ubuntu_14.04_x86_64/data /usr/share/acestream
-RUN mv acestream_3.0.5.1_ubuntu_14.04_x86_64/lib /usr/share/acestream
-RUN mv acestream_3.0.5.1_ubuntu_14.04_x86_64/acestream.conf /usr/share/acestream
-RUN mv acestream_3.0.5.1_ubuntu_14.04_x86_64/acestreamengine /usr/bin/acestreamengine
+RUN cp acestream_3.0.5.1_ubuntu_14.04_x86_64/data /usr/share/acestream
+RUN cp acestream_3.0.5.1_ubuntu_14.04_x86_64/lib /usr/share/acestream
+RUN cp acestream_3.0.5.1_ubuntu_14.04_x86_64/acestream.conf /usr/share/acestream
+RUN cp acestream_3.0.5.1_ubuntu_14.04_x86_64/acestreamengine /usr/bin/acestreamengine
  
 # Добавляем пользователя "tv" 
 RUN adduser --disabled-password --gecos "" tv 
