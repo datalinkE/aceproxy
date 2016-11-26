@@ -31,10 +31,10 @@ RUN apt-get install -y gdebi
 RUN gdebi libgnutls-deb0-28_3.3.15-5ubuntu2_amd64.deb
 RUN gdebi acestream-engine_3.0.5.1-0.2_amd64.deb 
 RUN apt-get install -y vlc-nox python-gevent unzip ca-certificates supervisor python-setuptools python-pip python-dev build-essential
+RUN pip install --upgrade pip
 RUN pip install greenlet gevent psutil 
 RUN systemctl enable supervisor 
-RUN systemctl start supervisor 
-
+ 
 # Добавляем пользователя "tv" 
 RUN adduser --disabled-password --gecos "" tv 
 
