@@ -1,8 +1,5 @@
-
-# Version: 0.0.3
-
 # Используем за основу контейнера phusion/baseimage
-FROM phusion/baseimage:0.9.19
+FROM phusion/baseimage:0.9.18
 
 # Переключаем Ubuntu в неинтерактивный режим — чтобы избежать лишних запросов
 ENV DEBIAN_FRONTEND noninteractive
@@ -20,20 +17,19 @@ RUN usermod -u 99 nobody
 RUN usermod -g 100 nobody
 
 # Добавляем необходимые репозитарии и устанавливаем пакеты
+RUN echo 'deb http://repo.acestream.org/ubuntu/ trusty main' > /etc/apt/sources.list.d/acestream.list
 RUN cd /tmp
-RUN apt-get update
+RUN curl -O http://repo.acestream.org/keys/acestream.public.key
+RUN apt-key add acestream.public.key
+RUN apt-get update -y
 RUN apt-get install -y wget mc nano
-RUN wget http://cloud.sybdata.com/AceStream/libgnutls-deb0-28_3.3.15-5ubuntu2_amd64.deb 
-RUN wget http://cloud.sybdata.com/AceStream/acestream-engine_3.0.5.1-0.2_amd64.deb
-RUN apt-get install -y gdebi
-RUN gdebi libgnutls-deb0-28_3.3.15-5ubuntu2_amd64.deb
-RUN y
-RUN gdebi acestream-engine_3.0.5.1-0.2_amd64.deb
-RUN y
-RUN apt-get install -y git python-gevent unzip ca-certificates supervisor python-setuptools python-pip python-dev build-essential
+RUN apt-get install -y acestream-engine git python-gevent unzip ca-certificates supervisor python-setuptools python-pip python-dev build-essential
 RUN pip install --upgrade pip
 RUN pip install greenlet gevent psutil 
-RUN systemctl enable supervisor 
+RUN wget -o - http://dl.acestream.org/ubuntu/14/acestream_3.0.5.1_ubuntu_14.04_x86_64.tar.gz 
+RUN tar --show-transformed-names --transform='s/acestream_3.0.5.1_ubuntu_14.04_x86_64/acestream/' -vzxf acestream_3.0.5.1_ubuntu_14.04_x86_64.tar.gz
+RUN mv acestream /usr/share 
+RUN mv acestream/acestreamengine /usr/bin/acestreamengine
  
 # Добавляем пользователя "tv" 
 RUN adduser --disabled-password --gecos "" tv 
