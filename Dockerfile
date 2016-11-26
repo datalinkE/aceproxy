@@ -7,7 +7,7 @@ ENV DEBIAN_FRONTEND noninteractive
 #Задаём порты
 EXPOSE 22 8000 8621 62062 9944 9903
 
-#Прбрасываем папку с конфигами aceproxy
+#Пробрасываем папку с конфигами aceproxy
 VOLUME /etc/aceproxy
 
 # Устанавливаем локаль
