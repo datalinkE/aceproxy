@@ -26,10 +26,12 @@ RUN apt-get install -y wget mc nano
 RUN apt-get install -y acestream-engine git python-gevent unzip ca-certificates supervisor python-setuptools python-pip python-dev build-essential
 RUN pip install --upgrade pip
 RUN pip install greenlet gevent psutil 
-RUN wget -o - http://dl.acestream.org/ubuntu/14/acestream_3.0.5.1_ubuntu_14.04_x86_64.tar.gz 
-RUN tar --show-transformed-names --transform='s/acestream_3.0.5.1_ubuntu_14.04_x86_64/acestream/' -vzxf acestream_3.0.5.1_ubuntu_14.04_x86_64.tar.gz
-RUN mv acestream /usr/share 
-RUN mv acestream/acestreamengine /usr/bin/acestreamengine
+RUN wget -o - http://dl.acestream.org/ubuntu/14/acestream_3.0.5.1_ubuntu_14.04_x86_64.tar.gz
+RUN tar -xf acestream_3.0.5.1_ubuntu_14.04_x86_64.tar.gz
+RUN mv acestream_3.0.5.1_ubuntu_14.04_x86_64/data /usr/share/acestream
+RUN mv acestream_3.0.5.1_ubuntu_14.04_x86_64/lib /usr/share/acestream
+RUN mv acestream_3.0.5.1_ubuntu_14.04_x86_64/acestream.conf /usr/share/acestream
+RUN mv acestream_3.0.5.1_ubuntu_14.04_x86_64/acestreamengine /usr/bin/acestreamengine
  
 # Добавляем пользователя "tv" 
 RUN adduser --disabled-password --gecos "" tv 
