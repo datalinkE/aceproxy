@@ -49,9 +49,6 @@ RUN chmod +x /start.sh
 
 # Подчищаем
 RUN apt-get clean
-RUN rm -rf acestream_3.0.5.1_ubuntu_14.04_x86_64.tar.gz
-RUN rm -rf acestream_3.0.5.1_ubuntu_14.04_x86_64
-RUN rm -rf acestream.public.key
 RUN rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /var/cache/man
 RUN find /usr/share/doc -depth -type f ! -name copyright|xargs rm || true
 RUN find /usr/share/doc -empty|xargs rmdir || true
