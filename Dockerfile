@@ -53,4 +53,5 @@ RUN rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /var/cache/man
 RUN find /usr/share/doc -depth -type f ! -name copyright|xargs rm || true
 RUN find /usr/share/doc -empty|xargs rmdir || true
 
+WORKDIR /
 ENTRYPOINT ["/start.sh"]
