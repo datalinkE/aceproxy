@@ -19,7 +19,6 @@ RUN usermod -g 100 nobody
 
 # Добавляем необходимые репозитарии и устанавливаем пакеты
 RUN echo 'deb http://repo.acestream.org/ubuntu/ trusty main' > /etc/apt/sources.list.d/acestream.list
-RUN cd /tmp
 RUN curl -O http://repo.acestream.org/keys/acestream.public.key
 RUN apt-key add acestream.public.key
 RUN apt-get update -y
