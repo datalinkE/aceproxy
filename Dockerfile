@@ -3,6 +3,7 @@ FROM phusion/baseimage:0.9.18
 
 # Переключаем Ubuntu в неинтерактивный режим — чтобы избежать лишних запросов
 ENV DEBIAN_FRONTEND noninteractive
+WORKDIR /tmp
 
 #Задаём порты
 EXPOSE 22 8000 8621 62062 9944 9903
