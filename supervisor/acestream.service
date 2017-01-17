@@ -1,9 +1,0 @@
-[Unit]
-Description=acestream
-After = remote-fs.target network-online.target
-
-[Service]
-ExecStart=/home/osmc/.kodi/acestream/autostart.sh
-
-[Install]
-WantedBy=multi-user.target
